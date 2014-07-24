@@ -27,5 +27,6 @@ Update the variables at the top of the script to match your setting. Comments ar
 As is. No support provided.
 
 ##Thanks 
+Mitchel Haan for doing all the real work.
 @mihaiile for some security tweaks.
 
