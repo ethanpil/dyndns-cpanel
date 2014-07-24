@@ -41,8 +41,10 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     die('Authentication Required.');
 }
 
-if(!$_SERVER['PHP_AUTH_USER']==$php_auth_user && $_SERVER['PHP_AUTH_PW']==$php_auth_pw)
+if(!($_SERVER['PHP_AUTH_USER']==$php_auth_user && $_SERVER['PHP_AUTH_PW']==$php_auth_pw)) {
+	sleep(10);
 	die('Invalid Credentials');
+}
 
 // Make sure a host was specified
 if (empty($_GET['hostname']))
