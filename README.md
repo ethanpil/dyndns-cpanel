@@ -1,6 +1,6 @@
 #dyndns-cpanel
 
-Dynamic DNS update script for CPanel accounts with DYNDNS.com API
+Dynamic DNS update script for CPanel accounts using DYNDNS.com API
 
 Based on the hard work of Mitchel Haan:
 
@@ -25,4 +25,7 @@ Update the variables at the top of the script to match your setting. Comments ar
 
 ##Support
 As is. No support provided.
+
+##Thanks 
+@mihaiile for some security tweaks.
 
