@@ -8,7 +8,7 @@ https://haanenterprises.com/2013/04/host-your-own-dynamic-dns-using-php-and-cpan
 
 Changes to Mr. Haan's code:
 
-* Removed the extra code that want needed to make this an update only client
+* Removed the extra code that wasn't needed to make this an update only client
 * Changed the get vars to comply with dyndns standards
 * Added basic http authentication
 
