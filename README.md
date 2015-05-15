@@ -23,10 +23,13 @@ Most dyndns clients will work to update your cpanel using this script as the cus
 ##Setup
 Update the variables at the top of the script to match your setting. Comments are provided to explain the values.
 
+Under certain server configurations `customonly` on line 209 must be set to 0 in order to find subdomain records.
+
 ##Support
 As is. No support provided.
 
 ##Thanks 
 Mitchel Haan for doing all the real work.
 @mihaiile for some security tweaks.
+@mattlyons0 for information on `customonly`
 
