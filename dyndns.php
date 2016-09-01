@@ -28,9 +28,6 @@ $dyndnsCpanelPass = 'password';
 #the main domain name of the account on cpanel
 $dyndnsDomain = 'example.com';
 
-#the base domain of which the subdomain has a dynamic ip
-$dyndnsRemoteHostDomain = '.example.com.';
-
 // Plain text output
 header('Content-type: text/plain');
 
@@ -38,17 +35,17 @@ header('Content-type: text/plain');
 if (!isset($_SERVER['PHP_AUTH_USER'])) {
     header('WWW-Authenticate: Basic realm="CPanel DynDyns"');
     header('HTTP/1.0 401 Unauthorized');
-    die('Authentication Required.');
+    die("badauth\n");
 }
 
 if(!($_SERVER['PHP_AUTH_USER']==$php_auth_user && $_SERVER['PHP_AUTH_PW']==$php_auth_pw)) {
 	sleep(10);
-	die('Invalid Credentials');
+	die("badauth\n");
 }
 
 // Make sure a host was specified
 if (empty($_GET['hostname']))
-	die('Must specify host');
+	die("notfqdn\n");
 
 // Use server value for IP if none was specified
 $ip = $_GET['myip'];
@@ -70,7 +67,6 @@ $dyn = new DynDnsUpdater();
 // Connection information
 $dyn->setCpanelHost($dyndnsCpanel);
 $dyn->setDomain($dyndnsDomain);
-$dyn->setHostDomain($dyndnsRemoteHostDomain);
 
 // Set username
 $dyn->setCpanelUsername($dyndnsCpanelUser);
@@ -81,12 +77,6 @@ $dyn->setCpanelPassword($dyndnsCpanelPass);
 
 $dyn->updateHost($_GET['hostname'], $ip);
 
-
-if ($dyn->apiCallTime > 0.0)
-{
-	echo "\nTotal cPanel API call time: {$dyn->apiCallTime} seconds\n";
-}
-
 // End of processing
 exit;
 
@@ -96,14 +86,11 @@ exit;
 
 class DynDnsUpdater
 {
-	public $apiCallTime;
-
 	private $curl;	
 	private $cpanelHost;
 	private $cpanelUsername;
 	private $cpanelPassword;
 	private $domain;
-	private $hostDomain;
 
 
 	/***** Constructor / Destructor *****/
@@ -120,8 +107,6 @@ class DynDnsUpdater
 			);
 
 		curl_setopt_array($this->curl, $curlDefaults);
-		
-		$this->apiCallTime = 0.0;
 	}
 	
 	function __destruct()
@@ -153,11 +138,6 @@ class DynDnsUpdater
 		$this->domain = $domain;
 	}
 
-	function setHostDomain($domain)
-	{
-		$this->hostDomain = $domain;
-	}
-
 	/***** Public Functions *****/
 	
 	
@@ -173,7 +153,7 @@ class DynDnsUpdater
 		{
 			if ($hostInfo['address'] == $ip)
 			{
-				echo "No update required: {$hostInfo['name']} ($ip)\n";
+				echo "nochg $ip\n";
 				return true;
 			}
 		
@@ -191,7 +171,7 @@ class DynDnsUpdater
 			$result = $this->cpanelRequest($updateParams);
 		
 			if ($result)
-				echo "Update successful: {$hostInfo['name']} ($ip)\n";
+				echo "good $ip\n";
 			else
 				echo "Update failed: {$hostInfo['name']}\n";
 		}
@@ -221,7 +201,7 @@ class DynDnsUpdater
 		foreach ($zoneFile as $line)
 		{
 			if ( ($line['type'] == 'A') && 
-				 ($host == DYNDNS_ALLHOSTS || (strcasecmp($line['name'], $host.$this->hostDomain) === 0)) )
+				 ($host == DYNDNS_ALLHOSTS || (strcasecmp($line['name'], $host.'.') === 0)) )
 			{	
 				$hosts[] = $line;
 			}
@@ -230,7 +210,7 @@ class DynDnsUpdater
 		if (!empty($hosts))
 			return $hosts;
 		else
-			echo "No hosts found\n";
+			echo "nohost\n";
 		
 		return false;
 	}
@@ -244,7 +224,6 @@ class DynDnsUpdater
 		curl_setopt($this->curl, CURLOPT_HTTPHEADER, array( 'Authorization: Basic ' . base64_encode($this->cpanelUsername.':'.$this->cpanelPassword)) );
 		
 		$result = curl_exec($this->curl);
-		$this->apiCallTime += curl_getinfo($this->curl, CURLINFO_TOTAL_TIME);
 		$error = false;
 		
 		// Check for valid result
