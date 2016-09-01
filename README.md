@@ -13,12 +13,12 @@ Changes to Mr. Haan's code:
 * Added basic http authentication
 
 ##DYNDNS Compatibility Note
-Most dyndns clients will work to update your cpanel using this script as the custom address. You will likely need to only provide the subdomain and not the full address as the hostname:
+Most dyndns clients will work to update your cpanel using this script as the custom address. You will likely need to provide the FQDN as the hostname:
 
-(ie: with this script, `hostname=remote`  instead of `hostname=remote.example.com`
+(ie: `hostname=remote.example.com` )
 
 ##Use:
-`http://username:password@website.com/dyndns.php?hostname=remote&myip=192.168.1.1`
+`http://username:password@website.com/dyndns.php?hostname=remote.domain.tld&myip=192.168.1.1`
 
 ##Setup
 Update the variables at the top of the script to match your setting. Comments are provided to explain the values.
@@ -32,4 +32,4 @@ As is. No support provided.
 * Mitchel Haan for doing all the real work.
 * @mihaiile for some security tweaks.
 * @mattlyons0 for information on `customonly`
-
+* @f03el for improved dyndns compliance
