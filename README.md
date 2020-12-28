@@ -1,4 +1,8 @@
-#dyndns-cpanel
+# dyndns-cpanel
+
+**NOTE: PROJECT IS EOL!!**
+C-Panel has now introduced Dynamic DNS into their core functionality, and this tool is no longer needed. Thanks for the support over the years, but this project should now be considered abandoned and EOL. More information: https://docs.cpanel.net/cpanel/domains/dynamic-dns/#/
+
 
 Dynamic DNS update script for CPanel accounts using DYNDNS.com API
 
@@ -17,18 +21,18 @@ Most dyndns clients will work to update your cpanel using this script as the cus
 
 (ie: `hostname=remote.example.com` )
 
-##Use:
+## Use:
 `http://username:password@website.com/dyndns.php?hostname=remote.domain.tld&myip=192.168.1.1`
 
-##Setup
+## Setup
 Update the variables at the top of the script to match your setting. Comments are provided to explain the values.
 
 Under certain server configurations `customonly` on line 209 must be set to 0 in order to find subdomain records. See https://github.com/ethanpil/dyndns-cpanel/issues/3
 
-##Support
+## Support
 As is. No support provided.
 
-##Thanks 
+## Thanks 
 * Mitchel Haan for doing all the real work.
 * @mihaiile for some security tweaks.
 * @mattlyons0 for information on `customonly`
